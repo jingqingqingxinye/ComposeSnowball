@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android" android:viewportWidth="24"
+    android:viewportHeight="24" android:width="24dp" android:height="24dp">
+    <group android:name="icon/通用/更多">
+        <path android:fillColor="#888888" android:name="Combined-Shape" android:fillType="evenOdd"
+            android:pathData="M6 11 C6.82842712 11 7.5 11.6715729 7.5 12.5 C7.5 13.3284271 6.82842712 14 6 14 C5.17157288 14 4.5 13.3284271 4.5 12.5 C4.5 11.6715729 5.17157288 11 6 11 Z M12 11 C12.8284271 11 13.5 11.6715729 13.5 12.5 C13.5 13.3284271 12.8284271 14 12 14 C11.1715729 14 10.5 13.3284271 10.5 12.5 C10.5 11.6715729 11.1715729 11 12 11 Z M18 11 C18.8284271 11 19.5 11.6715729 19.5 12.5 C19.5 13.3284271 18.8284271 14 18 14 C17.1715729 14 16.5 13.3284271 16.5 12.5 C16.5 11.6715729 17.1715729 11 18 11 Z" />
+    </group>
+</vector>
