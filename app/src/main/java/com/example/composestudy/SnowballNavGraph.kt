@@ -32,9 +32,6 @@ fun SnowballNavGraph(viewModel: HomeViewModel, startDestination: String = MainDe
             HomeActivityPage(viewModel, actions)
         }
         composable(MainDestinations.STOCK_DETAIL_PAGE) { backStackEntry ->
-//            val arguments = requireNotNull(backStackEntry.arguments)
-//            val parcelable = arguments.getString(STOCK_DETAIL_PAGE_URL)
-//            val fromJson = Gson().fromJson(parcelable, Article::class.java)
             StockDetailPage(onBack = actions.upPress)
         }
     }

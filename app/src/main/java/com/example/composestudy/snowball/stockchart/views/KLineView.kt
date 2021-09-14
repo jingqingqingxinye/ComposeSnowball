@@ -17,6 +17,7 @@ import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.input.pointer.PointerEvent
 import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.input.pointer.positionChangeConsumed
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -61,7 +62,7 @@ private fun KLineChart(dataList: List<KLinePriceData>) {
     var height = CHART_HEIGHT.value
     var downX = 0f
     // 在屏幕中的第一个蜡烛图对应集合的起始下标
-    var indexStart by remember{ mutableStateOf(0)}
+    var indexStart = 0
     // 在屏幕中的第一个蜡烛图对应集合的结束下标
     var indexEnd by remember{ mutableStateOf(dataList.size - 1)}
     // 是否显示十字光标
@@ -113,7 +114,7 @@ private fun KLineChart(dataList: List<KLinePriceData>) {
             forEachGesture {
                 awaitPointerEventScope {
                     while (true) {
-                        var event: PointerEvent = awaitPointerEvent(PointerEventPass.Final)
+                        val event: PointerEvent = awaitPointerEvent(PointerEventPass.Final)
                         if (event.changes.size == 1) {
                             // 1.单指操作
                             val pointer = event.changes[0]
@@ -122,7 +123,7 @@ private fun KLineChart(dataList: List<KLinePriceData>) {
                                 break
                             } else {
                                 if (pointer.previousPressed
-                                    && Math.abs(pointer.previousUptimeMillis - pointer.uptimeMillis)
+                                    && abs(pointer.previousUptimeMillis - pointer.uptimeMillis)
                                     > viewConfiguration.longPressTimeoutMillis) {
                                     // 1.1长按
                                     isShowCross = true
@@ -135,8 +136,8 @@ private fun KLineChart(dataList: List<KLinePriceData>) {
                                 } else if (pointer.previousPressed) {
                                     // 1.2没有进行长按的普通拖动
                                     val dx = pointer.position.x - downX
-                                    count = (-dx / (candleWidth + candleSpace * 2)).toInt()
-                                    if (Math.abs(count) >= 1) {
+                                    count = (-dx / (candleWidth + candleSpace)).toInt()
+                                    if (abs(count) >= 1) {
                                         indexStart += count
                                         indexEnd += count
                                         downX = pointer.position.x
@@ -159,7 +160,7 @@ private fun KLineChart(dataList: List<KLinePriceData>) {
                             }
                         } else if (event.changes.size > 1) {
                             // 2.多指操作
-                            if (!event.changes.get(0).pressed || !event.changes.get(1).pressed) {
+                            if (!event.changes[0].pressed || !event.changes[1].pressed) {
                                 // 多指操作时，前两个主要手指抬起，可以判断为手势抬起
                                 break
                             }
@@ -285,22 +286,30 @@ private fun KLineChart(dataList: List<KLinePriceData>) {
                     candlePaint)
                 // 标示最大值和最小值
                 if (dataList[i].mMaxPrice == maxValue) {
-                    candlePaint.color = Color.Black
-                    it.drawLine(
-                        Offset(startX + (candleWidth / 2),
-                        priceToY(dataList[i].mMaxPrice, yMaxValue, yMinValue, height)),
-                        Offset(startX + (candleWidth / 2) + lineWidth,
-                        priceToY(dataList[i].mMaxPrice, yMaxValue, yMinValue, height)), candlePaint);
-                    it.nativeCanvas.drawText(maxValue.toString(), startX + (candleWidth / 2) + lineWidth,
-                        priceToY(dataList[i].mMaxPrice, yMaxValue, yMinValue, height), yValuePaint)
+                    val maxValueLength = yValuePaint.measureText(maxValue.toString())
+                    if (startX + (candleWidth / 2) + lineWidth + maxValueLength <= width) {
+                        // 未超出边界，再进行绘制
+                        candlePaint.color = Color.Black
+                        it.drawLine(
+                            Offset(startX + (candleWidth / 2),
+                                priceToY(dataList[i].mMaxPrice, yMaxValue, yMinValue, height)),
+                            Offset(startX + (candleWidth / 2) + lineWidth,
+                                priceToY(dataList[i].mMaxPrice, yMaxValue, yMinValue, height)), candlePaint);
+                        it.nativeCanvas.drawText(maxValue.toString(), startX + (candleWidth / 2) + lineWidth,
+                            priceToY(dataList[i].mMaxPrice, yMaxValue, yMinValue, height), yValuePaint)
+                    }
                 } else if (dataList[i].mMinPrice == minValue) {
-                    candlePaint.color = Color.Black
-                    it.drawLine(
-                        Offset(startX + (candleWidth / 2), priceToY(dataList[i].mMinPrice, yMaxValue, yMinValue, height)),
-                        Offset(startX + (candleWidth / 2) + lineWidth, priceToY(dataList[i].mMinPrice,yMaxValue, yMinValue, height)),
-                        candlePaint)
-                    it.nativeCanvas.drawText(minValue.toString(), startX + (candleWidth / 2) + lineWidth,
-                        priceToY(dataList[i].mMinPrice, yMaxValue, yMinValue, height), yValuePaint)
+                    val minValueLength = yValuePaint.measureText(minValue.toString())
+                    if (startX + (candleWidth / 2) + lineWidth + minValueLength <= width) {
+                        // 未超出边界，再进行绘制
+                        candlePaint.color = Color.Black
+                        it.drawLine(
+                            Offset(startX + (candleWidth / 2), priceToY(dataList[i].mMinPrice, yMaxValue, yMinValue, height)),
+                            Offset(startX + (candleWidth / 2) + lineWidth, priceToY(dataList[i].mMinPrice,yMaxValue, yMinValue, height)),
+                            candlePaint)
+                        it.nativeCanvas.drawText(minValue.toString(), startX + (candleWidth / 2) + lineWidth,
+                            priceToY(dataList[i].mMinPrice, yMaxValue, yMinValue, height), yValuePaint)
+                    }
                 }
                 startX += candleWidth + candleSpace
             }
