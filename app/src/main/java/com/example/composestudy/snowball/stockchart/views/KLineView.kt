@@ -241,20 +241,19 @@ private fun KLineChart(dataList: List<KLinePriceData>) {
         // 股价等分间隔
         yValueInterval = (yMaxValue - yMinValue) / DIVIDER_NUM
         drawIntoCanvas {
-            // 绘制边框
+            // 1.绘制边框及绘制y轴等分线
             it.drawRect(0f, 0f, width, height, framePaint)
-            // 绘制y轴等分线
             it.drawLine(Offset(0f, yInterval), Offset(width, yInterval), framePaint)
             it.drawLine(Offset(0f, yInterval * 2), Offset(width, yInterval * 2), framePaint)
             it.drawLine(Offset(0f, yInterval * 3), Offset(width, yInterval * 3), framePaint)
-            // 绘制y轴坐标
+            // 2.绘制y轴坐标
             yValuePaint.color = Color.Black.toArgb()
             it.nativeCanvas.drawText(yMaxValue.toString(), 0f, yValuePaint.textSize, yValuePaint)
             it.nativeCanvas.drawText((yMaxValue - yValueInterval).toString(), 0f, yInterval + yValuePaint.textSize, yValuePaint)
             it.nativeCanvas.drawText((yMaxValue - yValueInterval * 2).toString(), 0f, yInterval * 2 + yValuePaint.textSize, yValuePaint)
             it.nativeCanvas.drawText((yMaxValue - yValueInterval * 3).toString(), 0f, yInterval * 3 + yValuePaint.textSize, yValuePaint)
             it.nativeCanvas.drawText((yMinValue).toString(), 0f, height, yValuePaint)
-            // 绘制柱状图及上下阴线
+            // 3.绘制柱状图及上下阴线
             var startX = 0f
             for (i in indexStart until indexEnd) {
                 if (dataList[i].mClosePrice  > dataList[i].mOpenPrice) {
@@ -324,24 +323,6 @@ fun ShowChartView() {
     KLineChart(generateKLineData(LocalContext.current))
 }
 
-
-@Preview
-@Composable
-fun ShowCustomView() {
-    Text(text = "test test",
-        modifier = Modifier
-            .height(100.dp)
-            .fillMaxWidth()
-            .pointerInput(Unit) {
-                forEachGesture {
-                    awaitPointerEventScope {
-                        val event = awaitPointerEvent()
-                        Log.e("jingqingqing", "forEachGesture:" + event.toString())
-
-                    }
-                }
-            })
-}
 
 
 
