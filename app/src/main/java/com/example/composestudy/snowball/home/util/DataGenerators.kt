@@ -20,14 +20,14 @@ import com.example.composestudy.snowball.home.data.PostData
 
 fun generateRandomPostItem(tabName: String? = ""): PostData {
     val name = listOf(
-        "紫金矿业(SH601899)",
+        "山西汾酒(SH601899)",
         "顺丰股份(SH601899)",
-        "爱美客(SH601899)",
+        "山西汾酒(SH601899)",
         "宁德时代(SH601899)",
         "比亚迪(SH601899)",
-        "长安汽车(SH601899)",
+        "山西汾酒(SH601899)",
         "恒瑞医药(SH601899)",
-        "中国平安(SH601899)",
+        "山西汾酒(SH601899)",
         "贵州茅台(SH601899)"
     ).random()
     val content = listOf(

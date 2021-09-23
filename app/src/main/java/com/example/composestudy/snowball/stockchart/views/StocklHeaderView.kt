@@ -24,7 +24,7 @@ fun StockChartHeaderView() {
             .wrapContentWidth()
             .wrapContentWidth(),
             verticalAlignment = Alignment.CenterVertically) {
-            Text(text = "355", fontSize = 36.sp, color = Red_F54346)
+            Text(text = "317.5", fontSize = 36.sp, color = Red_F54346)
             Text(text = "+6.9", fontSize = 14.sp,
                 modifier = Modifier.padding(start = 10.dp),
                 color = Red_F54346
@@ -34,10 +34,10 @@ fun StockChartHeaderView() {
             .fillMaxWidth()
             .wrapContentWidth(),
             verticalAlignment = Alignment.CenterVertically) {
-            Text(text = "高 367", fontSize = 14.sp,
+            Text(text = "高 318.68", fontSize = 14.sp,
                 modifier = Modifier.weight(1f), color = Color_666666
             )
-            Text(text = "开 354", fontSize = 14.sp,
+            Text(text = "开 312", fontSize = 14.sp,
                 modifier = Modifier.weight(1f), color = Color_666666
             )
             Text(text = "量 100万手", fontSize = 14.sp,
@@ -51,7 +51,7 @@ fun StockChartHeaderView() {
             .fillMaxWidth()
             .wrapContentWidth(),
             verticalAlignment = Alignment.CenterVertically) {
-            Text(text = "低 347", fontSize = 14.sp,
+            Text(text = "低 311", fontSize = 14.sp,
                 modifier = Modifier.weight(1f), color = Color_666666
             )
             Text(text = "换 3.2%", fontSize = 14.sp,
@@ -74,8 +74,8 @@ fun ChartHeadView() {
     Row(modifier = Modifier
         .padding(start = CHART_PADDING, end = CHART_PADDING, top = CHART_PADDING)
         .wrapContentHeight()) {
-        Text(text = "均价:522", fontSize = 14.sp, color = Red_FF8776)
-        Text(text = "最新:523 +5.67 + 8.6%", fontSize = 14.sp,
+        Text(text = "均价:316", fontSize = 14.sp, color = Red_FF8776)
+        Text(text = "最新:317.5 +5.67 + 5.6%", fontSize = 14.sp,
             modifier = Modifier.padding(start = 10.dp), color = Red_F54346)
     }
 }

@@ -2,6 +2,7 @@ package com.example.composestudy.snowball.stockchart.utils
 
 import androidx.compose.ui.input.pointer.PointerEvent
 import java.text.DecimalFormat
+import kotlin.math.roundToInt
 import kotlin.math.sqrt
 
 // 计算移动距离
@@ -13,11 +14,11 @@ fun distance(event: PointerEvent): Float {
 }
 
 fun priceToY(f: Float, yMaxValue: Float, yMinValue: Float, height: Float): Float {
-    return ((yMaxValue - f) / (yMaxValue - yMinValue) * height)
+    return ((((yMaxValue - f) / (yMaxValue - yMinValue) * height) * 100).roundToInt() / 100).toFloat()
 }
 
 fun yToPrice(f: Float, yMaxValue: Float, yMinValue: Float, height: Float): Float {
-    return yMaxValue - f * (yMaxValue - yMinValue) / height
+    return (((yMaxValue - f * (yMaxValue - yMinValue) / height) * 100).roundToInt() / 100).toFloat()
 }
 
 fun getOffset(value: Float): Float {
@@ -41,7 +42,7 @@ private fun getOffsetValue(str: String): Float {
     }
 }
 
-fun numToString(f: Float): String? {
+fun numToString(f: Float): String {
     val format = DecimalFormat("0.00")
     return format.format(f)
 }

@@ -39,6 +39,20 @@ private fun StockDetailScreen(onBack: () -> Unit) {
             .wrapContentWidth()) {
             StockChartHeaderView()
             StockDetailView(onBack)
+//            Text(modifier = Modifier.height(30.dp), text = "AndroidView版的K线图，如下：", fontSize = 18.sp)
+//
+//            AndroidView(
+//                factory = {
+//                    Log.e("jingqingqing", "start time:" + System.currentTimeMillis())
+//                    val view = AndroidViewKLineView(it)
+//                    view.initStockData(generateKLineData(it))
+//                    view
+//                },
+//                modifier = Modifier.padding(10.dp),
+//
+//            ) {
+//
+//            }
         }
     }
 }
@@ -98,7 +112,8 @@ private fun StockDetailView(onBack: () -> Unit) {
             dragEnabled = false
         ) {
             if (pagerState.currentPage == 0) {
-                MinuteTimeView(generateMinuteTimeData(LocalContext.current))
+                val list = generateMinuteTimeData(LocalContext.current)
+                MinuteTimeView(list)
             } else if (pagerState.currentPage == 1) {
                 KLineView(generateKLineData(LocalContext.current))
             }

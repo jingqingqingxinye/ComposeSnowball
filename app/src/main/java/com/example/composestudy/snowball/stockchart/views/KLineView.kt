@@ -2,12 +2,9 @@ package com.example.composestudy.snowball.stockchart.views
 
 
 import android.text.TextPaint
-import android.util.Log
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.forEachGesture
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
@@ -17,7 +14,6 @@ import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.input.pointer.PointerEvent
 import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.input.pointer.positionChangeConsumed
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -246,14 +242,7 @@ private fun KLineChart(dataList: List<KLinePriceData>) {
             it.drawLine(Offset(0f, yInterval), Offset(width, yInterval), framePaint)
             it.drawLine(Offset(0f, yInterval * 2), Offset(width, yInterval * 2), framePaint)
             it.drawLine(Offset(0f, yInterval * 3), Offset(width, yInterval * 3), framePaint)
-            // 2.绘制y轴坐标
-            yValuePaint.color = Color.Black.toArgb()
-            it.nativeCanvas.drawText(yMaxValue.toString(), 0f, yValuePaint.textSize, yValuePaint)
-            it.nativeCanvas.drawText((yMaxValue - yValueInterval).toString(), 0f, yInterval + yValuePaint.textSize, yValuePaint)
-            it.nativeCanvas.drawText((yMaxValue - yValueInterval * 2).toString(), 0f, yInterval * 2 + yValuePaint.textSize, yValuePaint)
-            it.nativeCanvas.drawText((yMaxValue - yValueInterval * 3).toString(), 0f, yInterval * 3 + yValuePaint.textSize, yValuePaint)
-            it.nativeCanvas.drawText((yMinValue).toString(), 0f, height, yValuePaint)
-            // 3.绘制柱状图及上下阴线
+            // 2.绘制柱状图及上下阴线
             var startX = 0f
             for (i in indexStart until indexEnd) {
                 if (dataList[i].mClosePrice  > dataList[i].mOpenPrice) {
@@ -294,8 +283,9 @@ private fun KLineChart(dataList: List<KLinePriceData>) {
                                 priceToY(dataList[i].mMaxPrice, yMaxValue, yMinValue, height)),
                             Offset(startX + (candleWidth / 2) + lineWidth,
                                 priceToY(dataList[i].mMaxPrice, yMaxValue, yMinValue, height)), candlePaint);
-                        it.nativeCanvas.drawText(maxValue.toString(), startX + (candleWidth / 2) + lineWidth,
-                            priceToY(dataList[i].mMaxPrice, yMaxValue, yMinValue, height), yValuePaint)
+                        it.nativeCanvas.drawText(
+                            numToString(maxValue), startX + (candleWidth / 2) + lineWidth,
+                            priceToY(dataList[i].mMaxPrice, yMaxValue, yMinValue, height) + 3.dp.toPx(), yValuePaint)
                     }
                 } else if (dataList[i].mMinPrice == minValue) {
                     val minValueLength = yValuePaint.measureText(minValue.toString())
@@ -306,12 +296,20 @@ private fun KLineChart(dataList: List<KLinePriceData>) {
                             Offset(startX + (candleWidth / 2), priceToY(dataList[i].mMinPrice, yMaxValue, yMinValue, height)),
                             Offset(startX + (candleWidth / 2) + lineWidth, priceToY(dataList[i].mMinPrice,yMaxValue, yMinValue, height)),
                             candlePaint)
-                        it.nativeCanvas.drawText(minValue.toString(), startX + (candleWidth / 2) + lineWidth,
+                        it.nativeCanvas.drawText(
+                            numToString(minValue), startX + (candleWidth / 2) + lineWidth,
                             priceToY(dataList[i].mMinPrice, yMaxValue, yMinValue, height), yValuePaint)
                     }
                 }
                 startX += candleWidth + candleSpace
             }
+            // 3.绘制y轴坐标
+            yValuePaint.color = Color.Black.toArgb()
+            it.nativeCanvas.drawText(numToString(yMaxValue), 0f, yValuePaint.textSize, yValuePaint)
+            it.nativeCanvas.drawText(numToString(yMaxValue - yValueInterval), 0f, yInterval + yValuePaint.textSize, yValuePaint)
+            it.nativeCanvas.drawText(numToString(yMaxValue - yValueInterval * 2), 0f, yInterval * 2 + yValuePaint.textSize, yValuePaint)
+            it.nativeCanvas.drawText(numToString(yMaxValue - yValueInterval * 3), 0f, yInterval * 3 + yValuePaint.textSize, yValuePaint)
+            it.nativeCanvas.drawText(numToString(yMinValue), 0f, height, yValuePaint)
         }
     }
 }

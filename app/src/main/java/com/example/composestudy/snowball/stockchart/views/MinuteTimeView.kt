@@ -1,7 +1,6 @@
 package com.example.composestudy.snowball.stockchart.views
 
 import android.text.TextPaint
-import android.util.Log
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.gestures.forEachGesture
 import androidx.compose.foundation.layout.*
@@ -158,9 +157,9 @@ private fun MinuteTimeChart(data: MinuteTimePriceData?) {
             }
             // 2.绘制x轴时间值
             textPaint.color = Color.Black.toArgb()
-            it.nativeCanvas.drawText("9:00", 0f, height - textPaint.textSize, textPaint)
+            it.nativeCanvas.drawText("9:00", 0f, height - 9.dp.toPx(), textPaint)
             it.nativeCanvas.drawText("15:00", width - textPaint.measureText("15:00"),
-                height - 8.dp.toPx(), textPaint)
+                height - 9.dp.toPx(), textPaint)
             // 3.绘制股价走势折线
             linePaint.color = Color.Blue
             shadowPath.moveTo(0f, frameHeight)
